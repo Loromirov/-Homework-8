@@ -1,14 +1,14 @@
 ﻿/*
-Задача 54: Задайте двумерный массив. Напишите программу, которая упорядочит по убыванию элементы каждой строки двумерного массива.
+Задача 56: Задайте прямоугольный двумерный массив. Напишите программу, которая будет находить строку с наименьшей суммой элементов.
+
 Например, задан массив:
+
 1 4 7 2
 5 9 2 3
 8 4 2 4
-В итоге получается вот такой массив:
-7 4 2 1
-9 5 3 2
-8 4 4 2
+5 2 6 7
 
+Программа считает сумму элементов в каждой строке и выдаёт номер строки с наименьшей суммой элементов: 1 строка
 */
 
 
@@ -17,28 +17,31 @@ int[,] arr =
 {
     { 1, 4, 7, 2 },
     { 5, 9, 2, 3 },
-    { 8, 4, 2, 4 }
+    { 8, 4, 1, 1 },
+    { 5, 2, 6, 7 }
 };
 
-void SortToLower(int[,] array)
+int minSumRow = 0;
+int sumRow = SumElementsOfRow(arr, 0);
+for (int i = 1; i < arr.GetLength(0); i++)
 {
-    for (int i = 0; i < array.GetLength(0); i++)
+    int tempSumRow = SumElementsOfRow(arr, i);
+    if (sumRow > tempSumRow)
     {
-        for (int j = 0; j < array.GetLength(1); j++)
-        {
-            for (int k = 0; k < array.GetLength(1) - 1; k++)
-            {
-                if (array[i, k] < array[i, k + 1])
-                {
-                    int temp = array[i, k + 1];
-                    array[i, k + 1] = array[i, k];
-                    array[i, k] = temp;
-                }
-            }
-        }
+        sumRow = tempSumRow;
+        minSumRow = i;
     }
 }
 
+int SumElementsOfRow(int[,] arr, int i)
+{
+    int sumRow = arr[i, 0];
+    for (int j = 1; j < arr.GetLength(1); j++)
+    {
+        sumRow += arr[i, j];
+    }
+    return sumRow;
+}
 void PrintArray(int[,] arr)
 {
     for (int i = 0; i < arr.GetLength(0); i++)
@@ -50,7 +53,5 @@ void PrintArray(int[,] arr)
 }
 
 PrintArray(arr);
-
-SortToLower(arr);
 System.Console.WriteLine();
-PrintArray(arr);
+System.Console.WriteLine($"{minSumRow + 1} - строка с наименьшей суммой элементов");
