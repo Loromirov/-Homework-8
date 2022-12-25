@@ -1,57 +1,76 @@
 ﻿/*
-Задача 56: Задайте прямоугольный двумерный массив. Напишите программу, которая будет находить строку с наименьшей суммой элементов.
+Задача 58: Задайте две матрицы. Напишите программу, которая будет находить произведение двух матриц.
+Например, даны 2 матрицы:
+2 4 | 3 4
+3 2 | 3 3
+Результирующая матрица будет:
+18 20
+15 18
 
-Например, задан массив:
 
-1 4 7 2
-5 9 2 3
-8 4 2 4
-5 2 6 7
-
-Программа считает сумму элементов в каждой строке и выдаёт номер строки с наименьшей суммой элементов: 1 строка
 */
 
 
+int rows = ReadInt("Введите количество строк: ");
+int columns = ReadInt("Введите количество столбцов: ");
+int[,] array = new int[rows, columns];
+int[,] secondArray = new int[rows, columns];
+int[,] resultArray = new int[rows, columns];
 
-int[,] arr =
-{
-    { 1, 4, 7, 2 },
-    { 5, 9, 2, 3 },
-    { 8, 4, 1, 1 },
-    { 5, 2, 6, 7 }
-};
+FillArrayRandom(array);
+PrintArray(array);
 
-int minSumRow = 0;
-int sumRow = SumElementsOfRow(arr, 0);
-for (int i = 1; i < arr.GetLength(0); i++)
+Console.WriteLine();
+
+FillArrayRandom(secondArray);
+PrintArray(secondArray);
+
+Console.WriteLine();
+
+if (array.GetLength(0) != secondArray.GetLength(1))
 {
-    int tempSumRow = SumElementsOfRow(arr, i);
-    if (sumRow > tempSumRow)
+    Console.WriteLine(" Нельзя перемножить ");
+    return;
+}
+for (int i = 0; i < array.GetLength(0); i++)
+{
+    for (int j = 0; j < secondArray.GetLength(1); j++)
     {
-        sumRow = tempSumRow;
-        minSumRow = i;
+        resultArray[i, j] = 0;
+        for (int k = 0; k < array.GetLength(1); k++)
+        {
+            resultArray[i, j] += array[i, k] * secondArray[k, j];
+        }
     }
 }
 
-int SumElementsOfRow(int[,] arr, int i)
+PrintArray(resultArray);
+
+int ReadInt(string message)
 {
-    int sumRow = arr[i, 0];
-    for (int j = 1; j < arr.GetLength(1); j++)
-    {
-        sumRow += arr[i, j];
-    }
-    return sumRow;
+    Console.Write(message);
+    return Convert.ToInt32(Console.ReadLine());
 }
-void PrintArray(int[,] arr)
+
+void FillArrayRandom(int[,] array)
 {
-    for (int i = 0; i < arr.GetLength(0); i++)
+    for (int i = 0; i < array.GetLength(0); i++)
     {
-        for (int j = 0; j < arr.GetLength(1); j++)
-            Console.Write($"{arr[i, j]} ");
+        for (int j = 0; j < array.GetLength(1); j++)
+        {
+            array[i, j] = new Random().Next(1, 10);
+        }
+    }
+}
+
+void PrintArray(int[,] array)
+{
+    for (int i = 0; i < array.GetLength(0); i++)
+    {
+        for (int j = 0; j < array.GetLength(1); j++)
+        {
+            Console.Write($"{array[i, j]} ");
+        }
         Console.WriteLine();
     }
 }
-
-PrintArray(arr);
-System.Console.WriteLine();
-System.Console.WriteLine($"{minSumRow + 1} - строка с наименьшей суммой элементов");
