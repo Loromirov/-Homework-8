@@ -1,76 +1,44 @@
 ﻿/*
-Задача 58: Задайте две матрицы. Напишите программу, которая будет находить произведение двух матриц.
-Например, даны 2 матрицы:
-2 4 | 3 4
-3 2 | 3 3
-Результирующая матрица будет:
-18 20
-15 18
-
-
+Задача 60. ...Сформируйте трёхмерный массив из неповторяющихся двузначных чисел. 
+Напишите программу, которая будет построчно выводить массив, добавляя индексы каждого элемента.
+Массив размером 2 x 2 x 2
+66(0,0,0) 25(0,1,0)
+34(1,0,0) 41(1,1,0)
+27(0,0,1) 90(0,1,1)
+26(1,0,1) 55(1,1,1)
 */
 
-
-int rows = ReadInt("Введите количество строк: ");
-int columns = ReadInt("Введите количество столбцов: ");
-int[,] array = new int[rows, columns];
-int[,] secondArray = new int[rows, columns];
-int[,] resultArray = new int[rows, columns];
-
-FillArrayRandom(array);
-PrintArray(array);
-
-Console.WriteLine();
-
-FillArrayRandom(secondArray);
-PrintArray(secondArray);
-
-Console.WriteLine();
-
-if (array.GetLength(0) != secondArray.GetLength(1))
+void PrintIndex(int[,,] mtrx)
 {
-    Console.WriteLine(" Нельзя перемножить ");
-    return;
-}
-for (int i = 0; i < array.GetLength(0); i++)
-{
-    for (int j = 0; j < secondArray.GetLength(1); j++)
+    for (int i = 0; i < mtrx.GetLength(0); i++)
     {
-        resultArray[i, j] = 0;
-        for (int k = 0; k < array.GetLength(1); k++)
+        for (int j = 0; j < mtrx.GetLength(1); j++)
         {
-            resultArray[i, j] += array[i, k] * secondArray[k, j];
+            System.Console.WriteLine();
+            for (int g = 0; g < mtrx.GetLength(2); g++)
+            {
+                System.Console.Write($"{mtrx[i, j, g]}({i},{j},{g})");
+            }
         }
     }
 }
-
-PrintArray(resultArray);
-
-int ReadInt(string message)
+int[,,] GenerateRandomMatrix(int min, int max, int m, int n, int k)
 {
-    Console.Write(message);
-    return Convert.ToInt32(Console.ReadLine());
-}
-
-void FillArrayRandom(int[,] array)
-{
-    for (int i = 0; i < array.GetLength(0); i++)
+    int[,,] mtrx = new int[m, n, k];
+    Random r = new Random();
+    for (int i = 0; i < m; i++)
     {
-        for (int j = 0; j < array.GetLength(1); j++)
+        for (int j = 0; j < n; j++)
         {
-            array[i, j] = new Random().Next(1, 10);
+            for (int g = 0; g < k; g++)
+            {
+                mtrx[i, j, g] = r.Next(min, max + 1);
+            }
         }
     }
+    return mtrx;
 }
 
-void PrintArray(int[,] array)
-{
-    for (int i = 0; i < array.GetLength(0); i++)
-    {
-        for (int j = 0; j < array.GetLength(1); j++)
-        {
-            Console.Write($"{array[i, j]} ");
-        }
-        Console.WriteLine();
-    }
-}
+
+int[,,] randMatrix = GenerateRandomMatrix(0, 9, 2, 2, 2);
+PrintIndex(randMatrix);
